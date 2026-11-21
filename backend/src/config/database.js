@@ -10,3 +10,18 @@ const con = mysql.createPool({
 });
 
 module.exports = con;
+
+// Testa a conexão com o banco de dados.
+const testarConexao = async () => {
+  try {
+    await con.query("SELECT 1");
+    console.log("Conexão com MySQL estabelecida!");
+  } catch (erro) {
+    console.error("Erro ao conectar ao MySQL:", erro.mensage);
+  }
+};
+
+module.exports = {
+  con,
+  testarConexao
+};
