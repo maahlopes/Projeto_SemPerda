@@ -12,7 +12,42 @@ const listarProdutos = async () => {
   return produtos;                                   
 };
 
+// Criamos a função cadastrarProduto().
+const cadastrarProduto = async (produto) => {
+  const {
+    id_estabelecimento,
+    id_fornecedor,
+    id_categoria,
+    nome,
+    quantidade = 0,
+    marca,
+    preco_original,
+    data_validade,
+  } = produto;
+
+  // Inserimos o produto no banco de dados.
+  const [resultado] = await con.query(
+    `INSERT INTO produto
+    (id_estabelecimento, id_fornecedor, id_categoria, nome, quantidade, marca, preco_original, data_validade)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      id_estabelecimento,
+      id_fornecedor,
+      id_categoria,
+      nome,
+      quantidade,
+      marca,
+      preco_original,
+      data_validade
+    ]
+  );
+
+  // Retornamos o resultado da inserção.
+  return resultado;
+};
+
 // Exportamos a função para o Controller utilizar.
 module.exports = {
-  listarProdutos
+  listarProdutos,
+  cadastrarProduto
 };
