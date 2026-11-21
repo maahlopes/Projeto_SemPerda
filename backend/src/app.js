@@ -10,7 +10,7 @@ app.use(express.json());
 // Importa as rotas de produtos.
 const produtoRota = require("./routes/produtoRota");
 
-// GET /produtos (utiliza as rotas de produtos).
+// (GET: /produtos) utiliza as rotas de produtos.
 app.use("/produtos", produtoRota);
 
 // Disponibiliza a aplicação para o server.js.
