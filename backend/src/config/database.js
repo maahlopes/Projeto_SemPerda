@@ -1,6 +1,10 @@
-const mysql = require('mysql2/promise');
-require('dotenv').config();
+// Importa o MySQL
+const mysql = require("mysql2/promise");
 
+// Carrega as configurações do arquivo .env.
+require("dotenv").config();
+
+// Cria a conexão com o banco de dados.
 const con = mysql.createPool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
@@ -9,18 +13,17 @@ const con = mysql.createPool({
     database: process.env.DB_NAME
 });
 
-module.exports = con;
-
 // Testa a conexão com o banco de dados.
 const testarConexao = async () => {
   try {
     await con.query("SELECT 1");
     console.log("Conexão com MySQL estabelecida!");
   } catch (erro) {
-    console.error("Erro ao conectar ao MySQL:", erro.mensage);
+      console.error("Erro ao conectar ao MySQL:", erro.message);
   }
 };
 
+// Exporta a conexão e a função de teste.
 module.exports = {
   con,
   testarConexao
