@@ -1,27 +1,30 @@
-// Importamos as funções do Model de produtos.
-const produtoModel = require("../models/produtoModel");
+// Importa o MySQL
+const mysql = require("mysql2/promise");
 
-// Criamos a função para listar os produtos.
-const listarProdutos = async (req, res) => {
+// Carrega as configurações do arquivo .env.
+require("dotenv").config();
+
+// Cria a conexão com o banco de dados.
+const con = mysql.createPool({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
+});
+
+// Testa a conexão com o banco de dados.
+const testarConexao = async () => {
   try {
-    // Chamamos a função do Model.
-    const produtos = await produtoModel.listarProdutos();
-
-    // Retornamos os produtos em formato JSON.
-    res.status(200).json(produtos);
-    
+    await con.query("SELECT 1");
+    console.log("Conexão com MySQL estabelecida!");
   } catch (erro) {
-    // Exibimos o erro no terminal.
-    console.error("Erro ao listar produtos:", erro);
-
-    // Retornamos uma mensagem de erro.
-    res.status(500).json({
-      mensagem: "Erro ao buscar produtos."
-    });
+      console.error("Erro ao conectar ao MySQL:", erro.message);
   }
 };
 
-// Exportamos a função para as rotas utilizarem.
+// Exporta a conexão e a função de teste.
 module.exports = {
-  listarProdutos
+  con,
+  testarConexao
 };
