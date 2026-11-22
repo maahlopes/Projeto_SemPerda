@@ -13,5 +13,11 @@ router.get("/", produtoController.listarProdutos);
 // (POST: /produtos) Criamos a rota para cadastrar produtos.
 router.post("/", produtoController.cadastrarProduto);
 
+// (PUT: /produtos/:id) Criamos a rota para atualizar produtos.
+router.put("/:id", produtoController.atualizarProduto);
+
+// (DELETE: /produtos/:id) Criamos a rota para excluir produtos.
+router.delete("/:id", produtoController.excluirProduto);
+
 // Exportamos as rotas.
 module.exports = router;
