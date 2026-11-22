@@ -1,4 +1,3 @@
-
 // Importamos a conexão com o MySQL.
 const { con } = require("../config/database");
 
@@ -18,11 +17,14 @@ const listarOfertas = async () => {
 // Criamos a função para buscar um produto pelo ID.
 const buscarProdutoPorId = async (id) => {
   const [produtos] = await con.query(
-    "SELECT id_produto, preco_original FROM produto WHERE id_produto = ?",
+    `SELECT id_produto, preco_original
+    FROM produto
+    WHERE id_produto = ?
+    LIMIT 1`,
     [id]
   );
 
-  // Retornamos o produto encontrado.
+  // Retornamos o produto encontrado ou null.
   return produtos[0] || null;
 };
 
@@ -90,7 +92,10 @@ const atualizarOferta = async (id, oferta) => {
 
   // Verificamos se a oferta existe.
   const [ofertas] = await con.query(
-    "SELECT id_oferta FROM oferta WHERE id_oferta = ?",
+    `SELECT id_oferta
+    FROM oferta
+    WHERE id_oferta = ?
+    LIMIT 1`,
     [id]
   );
 
