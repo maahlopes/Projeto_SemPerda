@@ -19,7 +19,7 @@ const cadastrarProduto = async (produto) => {
     id_fornecedor,
     id_categoria,
     nome,
-    quantidade = 0,
+    quantidade,
     marca,
     preco_original,
     data_validade,
@@ -32,11 +32,11 @@ const cadastrarProduto = async (produto) => {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       id_estabelecimento,
-      id_fornecedor,
+      id_fornecedor ?? null,
       id_categoria,
       nome,
-      quantidade,
-      marca,
+      quantidade ?? 0,
+      marca ?? null,
       preco_original,
       data_validade
     ]
