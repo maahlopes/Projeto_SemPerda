@@ -1,4 +1,3 @@
-
 // Importamos as funções do Model de produtos.
 const produtoModel = require("../models/produtoModel");
 
