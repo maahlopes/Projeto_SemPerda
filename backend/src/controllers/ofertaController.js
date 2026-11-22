@@ -1,4 +1,3 @@
-
 // Importamos as funções do Model de ofertas.
 const ofertaModel = require("../models/ofertaModel");
 
@@ -21,7 +20,6 @@ const validarOferta = async (oferta) => {
 
   // Verificamos se o ID do produto é válido.
   if (
-    !/^\d+$/.test(String(oferta.id_produto)) ||
     !Number.isSafeInteger(Number(oferta.id_produto)) ||
     Number(oferta.id_produto) <= 0
   ) {
@@ -52,13 +50,11 @@ const validarOferta = async (oferta) => {
   }
 
   // Verificamos se as datas possuem o formato correto.
-  const formatoData = /^\d{4}-\d{2}-\d{2}$/;
-
   if (
     typeof oferta.data_inicio !== "string" ||
     typeof oferta.data_fim !== "string" ||
-    !formatoData.test(oferta.data_inicio) ||
-    !formatoData.test(oferta.data_fim)
+    !/^\d{4}-\d{2}-\d{2}$/.test(oferta.data_inicio) ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(oferta.data_fim)
   ) {
     return "Informe datas válidas no formato AAAA-MM-DD.";
   }
@@ -77,11 +73,11 @@ const validarOferta = async (oferta) => {
   }
 
   // Verificamos se a data final não é anterior à inicial.
-  if (oferta.data_fim < oferta.data_inicio) {
+  if (dataFim < dataInicio) {
     return "A data final não pode ser anterior à data inicial.";
   }
 
-  // Verificamos se o status informado é permitido.
+  // Verificamos se o status pertence às opções permitidas.
   const statusPermitidos = ["Ativa", "Encerrada", "Cancelada"];
 
   if (
@@ -101,24 +97,24 @@ const validarOferta = async (oferta) => {
     return "O produto informado não existe.";
   }
 
-  // Convertimos os preços para números.
+  // Verificamos se o preço promocional é menor que o original.
   const precoOriginal = Number(produto.preco_original);
   const precoPromocional = Number(oferta.preco_promocional);
 
-  // Verificamos se o preço promocional é menor que o original.
   if (precoPromocional >= precoOriginal) {
     return "O preço promocional deve ser menor que o preço original.";
   }
 
-  // Verificamos se o percentual informado corresponde ao preço.
+  // Verificamos se o percentual informado corresponde ao desconto.
   if (oferta.percentual_desconto != null) {
-    const percentual = Number(oferta.percentual_desconto);
+    const descontoCalculado = Math.round(
+      ((precoOriginal - precoPromocional) / precoOriginal) * 10000
+    ) / 100;
 
-    const precoCalculado =
-      Math.round(precoOriginal * (1 - percentual / 100) * 100) / 100;
-
-    if (Math.round(precoCalculado * 100) !== Math.round(precoPromocional * 100)) {
-      return "O percentual de desconto não corresponde ao preço promocional.";
+    if (
+      Number(oferta.percentual_desconto) !== descontoCalculado
+    ) {
+      return "O percentual de desconto não corresponde aos preços informados.";
     }
   }
 
@@ -133,12 +129,12 @@ const listarOfertas = async (req, res) => {
     const ofertas = await ofertaModel.listarOfertas();
 
     // Retornamos as ofertas em formato JSON.
-    res.status(200).json(ofertas);
+    return res.status(200).json(ofertas);
 
   } catch (erro) {
     console.error("Erro ao listar ofertas:", erro);
 
-    res.status(500).json({
+    return res.status(500).json({
       mensagem: "Erro ao buscar ofertas."
     });
   }
@@ -163,7 +159,7 @@ const cadastrarOferta = async (req, res) => {
     const resultado = await ofertaModel.cadastrarOferta(oferta);
 
     // Retornamos uma mensagem de sucesso.
-    res.status(201).json({
+    return res.status(201).json({
       mensagem: "Oferta cadastrada com sucesso!",
       id_oferta: resultado.insertId
     });
@@ -178,7 +174,7 @@ const cadastrarOferta = async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       mensagem: "Erro ao cadastrar oferta."
     });
   }
@@ -220,7 +216,7 @@ const atualizarOferta = async (req, res) => {
     }
 
     // Retornamos uma mensagem de sucesso.
-    res.status(200).json({
+    return res.status(200).json({
       mensagem: "Oferta atualizada com sucesso!"
     });
 
@@ -234,7 +230,7 @@ const atualizarOferta = async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       mensagem: "Erro ao atualizar oferta."
     });
   }
@@ -264,14 +260,14 @@ const excluirOferta = async (req, res) => {
     }
 
     // Retornamos uma mensagem de sucesso.
-    res.status(200).json({
+    return res.status(200).json({
       mensagem: "Oferta excluída com sucesso!"
     });
 
   } catch (erro) {
     console.error("Erro ao excluir oferta:", erro);
 
-    res.status(500).json({
+    return res.status(500).json({
       mensagem: "Erro ao excluir oferta."
     });
   }
