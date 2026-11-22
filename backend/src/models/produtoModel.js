@@ -1,4 +1,3 @@
-
 // Importamos a conexão com o MySQL.
 const { con } = require("../config/database");
 
