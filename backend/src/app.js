@@ -13,7 +13,7 @@ const produtoRota = require("./routes/produtoRota");
 // (GET: /produtos) utiliza as rotas de produtos.
 app.use("/produtos", produtoRota);
 
-// Importa as rotas da ofertas.
+// Importa as rotas de ofertas.
 const ofertaRota = require("./routes/ofertaRota");
 
 // (GET: /ofertas) utiliza as rotas de ofertas.
