@@ -1,18 +1,18 @@
+
 // Importamos a conexão com o MySQL.
 const { con } = require("../config/database");
 
-// Criamos a função listarProdutos().
-// Depois utilizamos SELECT * FROM produto para buscar os registros.
+// Criamos a função para listar os produtos.
 const listarProdutos = async () => {
   const [produtos] = await con.query(
-    "SELECT * FROM produto"
+    "SELECT * FROM produto ORDER BY id_produto DESC"
   );
 
   // Retornamos os produtos encontrados.
-  return produtos;                                   
+  return produtos;
 };
 
-// Criamos a função cadastrarProduto().
+// Criamos a função para cadastrar produtos.
 const cadastrarProduto = async (produto) => {
   const {
     id_estabelecimento,
@@ -22,7 +22,7 @@ const cadastrarProduto = async (produto) => {
     quantidade,
     marca,
     preco_original,
-    data_validade,
+    data_validade
   } = produto;
 
   // Inserimos o produto no banco de dados.
@@ -46,7 +46,6 @@ const cadastrarProduto = async (produto) => {
   return resultado;
 };
 
-
 // Criamos a função para atualizar produtos.
 const atualizarProduto = async (id, produto) => {
   const {
@@ -57,7 +56,7 @@ const atualizarProduto = async (id, produto) => {
     quantidade,
     marca,
     preco_original,
-    data_validade,
+    data_validade
   } = produto;
 
   // Atualizamos os dados do produto no banco.
@@ -100,7 +99,6 @@ const atualizarProduto = async (id, produto) => {
 
 // Criamos a função para excluir produtos.
 const excluirProduto = async (id) => {
-
   // Excluímos o produto pelo seu ID.
   const [resultado] = await con.query(
     "DELETE FROM produto WHERE id_produto = ?",
@@ -111,7 +109,7 @@ const excluirProduto = async (id) => {
   return resultado;
 };
 
-// Exportamos a função para o Controller utilizar.
+// Exportamos as funções para o Controller utilizar.
 module.exports = {
   listarProdutos,
   cadastrarProduto,
