@@ -1,4 +1,3 @@
-
 // Carrega as configurações do .env.
 require("dotenv").config();
 
