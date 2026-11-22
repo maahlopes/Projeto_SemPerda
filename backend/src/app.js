@@ -13,5 +13,11 @@ const produtoRota = require("./routes/produtoRota");
 // (GET: /produtos) utiliza as rotas de produtos.
 app.use("/produtos", produtoRota);
 
+// Importa as rotas da ofertas.
+const ofertaRota = require("./routes/ofertaRota");
+
+// (GET: /ofertas) utiliza as rotas de ofertas.
+app.use("/ofertas", ofertaRota);
+
 // Disponibiliza a aplicação para o server.js.
 module.exports = app;
