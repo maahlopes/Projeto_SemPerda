@@ -19,5 +19,5 @@ router.put("/:id", produtoController.atualizarProduto);
 // (DELETE: /produtos/:id) Criamos a rota para excluir produtos.
 router.delete("/:id", produtoController.excluirProduto);
 
-// Exportamos as rotas.
+// Exportamos o roteador.
 module.exports = router;
